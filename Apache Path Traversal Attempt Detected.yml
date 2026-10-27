@@ -1,0 +1,30 @@
+title: Apache Path Traversal Attempt Detected
+id: a1b2c3d4-e5f6-7890-abcd-ef0123456789
+status: experimental
+description: Detects path traversal attempts targeting sensitive files such as /etc/passwd on Apache web servers.
+references:
+    - Internal Capstone Project
+author: SOC Team
+date: 2026/10/26
+tags:
+    - attack.reconnaissance
+    - attack.t1595
+logsource:
+    category: webserver
+    product: apache
+detection:
+    selection:
+        sourcetype: access_combined
+        url__contains:
+            - ".."
+            - "%2e%2e"
+            - "etc/passwd"
+    filter:
+        status:
+            - 200
+            - 404
+    condition: selection and filter
+falsepositives:
+    - Authorized web vulnerability scanners during penetration testing.
+    - Misconfigured legitimate URLs containing double dots.
+level: medium
