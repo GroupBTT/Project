@@ -1,0 +1,12 @@
+title: Linux Cron Job Modification
+id: 10a1b2c3-0002-4000-8000-000000000002
+status: experimental
+logsource:
+    product: linux
+    service: auditd
+author: Baraa Alshoqran
+detection:
+    selection:
+        exe: '/usr/bin/crontab'
+    condition: selection
+level: medium

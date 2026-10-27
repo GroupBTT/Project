@@ -1,0 +1,26 @@
+title: PowerShell Encoded Command Execution
+id: 1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d
+status: experimental
+description: Detects execution of PowerShell with Base64 encoded command arguments.
+references:
+    - https://attack.mitre.org/techniques/T1059/001/
+author: Baraa Alshoqran
+date: 2026/10/24
+logsource:
+    category: process_creation
+    product: windows
+    service: sysmon
+detection:
+    selection:
+        EventID: 1
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains:
+            - '-EncodedCommand'
+            - '-enc '
+    condition: selection
+falsepositives:
+    - Legitimate administrative scripts using encoded parameters
+level: high
+tags:
+    - attack.execution
+    - attack.t1059.001

@@ -1,0 +1,11 @@
+title: Linux User Account Creation
+id: 10a1b2c3-0003-4000-8000-000000000003
+logsource:
+    product: linux
+    service: auditd
+author: Baraa Alshoqran
+detection:
+    selection:
+        type: 'ADD_USER'
+    condition: selection
+level: medium
