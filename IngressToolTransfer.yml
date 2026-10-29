@@ -1,0 +1,30 @@
+title: Suspicious File Download via Native Binaries (Certutil or Curl)
+id: d45e89a2-7b11-4122-8921-110500000001
+status: experimental
+description: Detects the execution of native binaries like curl or certutil used to download files from external sources.
+references:
+    - https://attack.mitre.org/techniques/T1105/
+author: Taqwa
+date: 2026/10/29
+tags:
+    - attack.ingress_tool_transfer
+    - attack.t1105
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_certutil:
+        CommandLine|contains:
+            - 'certutil'
+            - '-urlcache'
+            - '-split'
+    selection_curl:
+        CommandLine|contains:
+            - 'curl'
+            - '-O'
+            - '--output'
+            - '-o'
+    condition: selection_certutil or selection_curl
+falsepositives:
+    - Legitimate administrative script downloads or software updates.
+level: medium

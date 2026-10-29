@@ -1,0 +1,26 @@
+title: Suspicious Scheduled Task Creation via Schtasks
+id: d45e89a2-7b11-4122-8921-105300000002
+status: experimental
+description: Detects the creation of new scheduled tasks using the schtasks utility, often used for persistence or execution.
+references:
+    - https://attack.mitre.org/techniques/T1053/005/
+author: Taqwa
+date: 2026/10/29
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.t1053.005
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\schtasks.exe'
+        CommandLine|contains:
+            - '/create'
+            - '/tr'
+            - '/tn'
+    condition: selection
+falsepositives:
+    - Legitimate administrative tasks scheduled by software installers or admins.
+level: high

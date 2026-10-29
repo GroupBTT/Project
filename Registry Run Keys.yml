@@ -1,0 +1,27 @@
+title: Suspicious Registry Run Key Modification for Persistence
+id: d45e89a2-7b11-4122-8921-154700000003
+status: experimental
+description: Detects modifications to Windows registry run keys to achieve persistence upon system reboot.
+references:
+    - https://attack.mitre.org/techniques/T1547/001/
+author: Taqwa
+date: 2026/10/29
+tags:
+    - attack.persistence
+    - attack.t1547.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_reg:
+        Image|endswith: '\reg.exe'
+        CommandLine|contains:
+            - 'add'
+    selection_keys:
+        CommandLine|contains:
+            - '\Run'
+            - '\RunOnce'
+    condition: selection_reg and selection_keys
+falsepositives:
+    - Legitimate software installations adding startup entries.
+level: high
